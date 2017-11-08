@@ -5,7 +5,7 @@ class Square extends React.Component{
 
   render() {
     return (
-      <p>
+      <p onClick={(e) => {this.props.onSquareClick(this.props.index)}}>
         {this.props.square}
       </p>
     )

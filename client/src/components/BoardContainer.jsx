@@ -8,8 +8,37 @@ class BoardContainer extends React.Component {
     super(props)
     this.state = {
       gameChecker: new GameChecker(),
-      game: [null, null, null, "x", null, null, null, null, null],
-      currentPlayer: "X"
+      game: [null, null, null, null, null, null, null, null, null],
+      currentPlayer: "X",
+      winner: null
+    }
+    this.handleClick = this.handleClick.bind(this)
+  }
+
+  handleClick(index){
+    console.log(index);
+    const newArray = this.state.game
+    newArray[index] = this.state.currentPlayer;
+    this.setState({game: newArray})
+    this.declareWinner()
+    this.nextPlayer()
+  }
+
+  declareWinner(){
+    var winner = this.state.gameChecker.win(this.state.game)
+    if (winner){
+      console.log("winner", winner)
+      this.setState({winner: winner})
+    }
+
+  }
+
+  nextPlayer() {
+    if (this.state.currentPlayer === "X"){
+      this.setState({currentPlayer: "O"})
+    } else {
+      this.setState({currentPlayer: "X"})
+
     }
   }
 
@@ -19,7 +48,11 @@ class BoardContainer extends React.Component {
   getSquares(){
     const squares = this.state.game.map((square, index) => {
       return (
-        <Square square={square} key={index} />
+        <Square square={square}
+          key={index}
+          index={index}
+          onSquareClick={this.handleClick}
+        />
       )
     })
     return squares;
@@ -28,11 +61,22 @@ class BoardContainer extends React.Component {
 
   render(){
     const squares = this.getSquares()
-    return (
-      <div className="wrapper">
-      {squares}
-    </div>
-    )
+    if (this.state.winner){
+      return (
+        <div>
+          <div className="wrapper">
+          {squares}
+          </div>
+            <h1>The winner is {this.state.winner}</h1>
+        </div>
+      )
+    } else {
+      return (
+        <div className="wrapper">
+        {squares}
+      </div>
+      )
+    }
   }
 }
 
