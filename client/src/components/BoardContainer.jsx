@@ -13,6 +13,7 @@ class BoardContainer extends React.Component {
       winner: null
     }
     this.handleClick = this.handleClick.bind(this)
+    this.startNewRound = this.startNewRound.bind(this)
   }
 
   handleClick(index){
@@ -31,6 +32,14 @@ class BoardContainer extends React.Component {
       this.setState({winner: winner})
     }
 
+  }
+
+  startNewRound(){
+    this.setState({
+      gameChecker: new GameChecker(),
+      game: [null, null, null, null, null, null, null, null, null],
+      currentPlayer: "X",
+      winner: null})
   }
 
   nextPlayer() {
@@ -68,6 +77,7 @@ class BoardContainer extends React.Component {
           {squares}
           </div>
             <h1>The winner is {this.state.winner}</h1>
+            <button onClick={this.startNewRound}>New Game</button>
         </div>
       )
     } else {
